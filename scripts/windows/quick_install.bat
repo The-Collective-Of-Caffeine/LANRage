@@ -51,7 +51,7 @@ where uv >nul 2>&1 || (
 REM Step 4: Setup environment
 echo [4/5] Setting up LANrage environment...
 if not exist ".venv" (
-    start "LANrage Setup" cmd /k "python -m venv .venv && .venv\Scripts\activate.bat && python -m pip install --upgrade pip && python -m pip install uv && uv pip install -r requirements.txt && .venv\Scripts\python.exe setup.py && echo Setup complete! && pause && exit"
+    start "LANrage Setup" cmd /k "python -m venv .venv && .venv\Scripts\activate.bat && python -m pip install --upgrade pip && python -m pip install uv && uv pip install -r requirements.txt && .venv\Scripts\python.exe scripts\setup_project.py && echo Setup complete! && pause && exit"
     echo Press any key after environment setup completes...
     pause >nul
 )

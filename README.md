@@ -65,7 +65,7 @@ git clone https://github.com/coff33ninja/LANRage.git
 cd lanrage
 
 # Run setup
-python setup.py
+uv sync
 ```
 
 ### 2. Run

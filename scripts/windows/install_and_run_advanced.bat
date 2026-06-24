@@ -190,7 +190,7 @@ if not exist ".env" (
     echo Running LANrage initial setup...
     echo.
     echo Opening setup in new window...
-    start "LANrage Setup" cmd /c "echo Running LANrage initial configuration... && echo. && .venv\Scripts\python.exe setup.py && echo. && echo LANrage setup completed successfully! && echo. && echo Setup window will close in 10 seconds... && timeout /t 10"
+    start "LANrage Setup" cmd /c "echo Running LANrage initial configuration... && echo. && .venv\Scripts\python.exe scripts\setup_project.py && echo. && echo LANrage setup completed successfully! && echo. && echo Setup window will close in 10 seconds... && timeout /t 10"
     
     call :wait_for_user
     

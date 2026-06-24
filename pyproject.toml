@@ -1,14 +1,17 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=77.0.0"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["api*", "core*", "servers*", "game_profiles*"]
 
 [project]
 name = "lanrage"
-version = "2.0.0"
+version = "2.0.1"
 description = "Zero-config mesh VPN optimized for gaming - If it runs on LAN, it runs on LANrage"
 readme = "README.md"
 requires-python = ">=3.12"
-license = {text = "MIT"}
+license = "MIT"
 authors = [
     {name = "coff33ninja", email = "coff33ninja69@gmail.com"}
 ]
@@ -16,7 +19,6 @@ keywords = ["vpn", "gaming", "lan", "wireguard", "mesh", "p2p", "nat-traversal"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: End Users/Desktop",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
     "Topic :: Games/Entertainment",

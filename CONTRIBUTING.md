@@ -26,7 +26,7 @@ git clone https://github.com/YOUR_USERNAME/LANRage.git
 cd lanrage
 
 # Run setup
-python setup.py
+uv sync
 
 # Activate virtual environment
 .venv\Scripts\activate.bat  # Windows

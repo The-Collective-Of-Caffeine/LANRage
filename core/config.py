@@ -110,5 +110,5 @@ class Config(BaseModel):
             logger.error(f"Failed to load configuration: {type(e).__name__}: {e}")
             raise ConfigError(
                 f"Failed to load configuration from database: {type(e).__name__}: {e}. "
-                "Please ensure the database is initialized by running setup.py or accessing the WebUI."
+                "Please ensure the database is initialized by running 'uv run scripts/setup_project.py' or accessing the WebUI."
             ) from e

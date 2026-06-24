@@ -99,7 +99,7 @@ def test_multiple_clients(server):
 
     for i, key in enumerate(keys):
         server.clients[key] = RelayClient(
-            public_key=key, address=(f"1.2.3.{i+1}", 51820), last_seen=datetime.now()
+            public_key=key, address=(f"1.2.3.{i + 1}", 51820), last_seen=datetime.now()
         )
 
     assert len(server.clients) == 3

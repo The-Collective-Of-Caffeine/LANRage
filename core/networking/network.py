@@ -116,7 +116,9 @@ class NetworkManager:
             wg_paths = [
                 "C:\\Program Files\\WireGuard\\wireguard.exe",
                 "C:\\Program Files (x86)\\WireGuard\\wireguard.exe",
-                os.path.expanduser("~\\AppData\\Local\\Programs\\WireGuard\\wireguard.exe"),
+                os.path.expanduser(
+                    "~\\AppData\\Local\\Programs\\WireGuard\\wireguard.exe"
+                ),
             ]
             marker_file = ".wireguard_installed"
             if os.path.exists(marker_file):
@@ -125,7 +127,9 @@ class NetworkManager:
                         marker_path = f.read().strip()
                     if marker_path and os.path.exists(marker_path):
                         wg_dir = os.path.dirname(marker_path)
-                        os.environ["PATH"] = wg_dir + os.pathsep + os.environ.get("PATH", "")
+                        os.environ["PATH"] = (
+                            wg_dir + os.pathsep + os.environ.get("PATH", "")
+                        )
                         await self._log("WireGuard found via marker file")
                         return True
                 except Exception:
@@ -133,7 +137,9 @@ class NetworkManager:
             for path in wg_paths:
                 if os.path.exists(path):
                     wg_dir = os.path.dirname(path)
-                    os.environ["PATH"] = wg_dir + os.pathsep + os.environ.get("PATH", "")
+                    os.environ["PATH"] = (
+                        wg_dir + os.pathsep + os.environ.get("PATH", "")
+                    )
                     await self._log("WireGuard found in common install location")
                     return True
         return False

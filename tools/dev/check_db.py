@@ -23,9 +23,9 @@ async def check_db():
         print("No configurations saved")
     else:
         for config in configs:
-            print(f'ID: {config["id"]}, Name: {config["name"]}, Mode: {config["mode"]}')
-            print(f'  Config: {config["config"]}')
-            print(f'  Enabled: {config["enabled"]}')
+            print(f"ID: {config['id']}, Name: {config['name']}, Mode: {config['mode']}")
+            print(f"  Config: {config['config']}")
+            print(f"  Enabled: {config['enabled']}")
 
 
 asyncio.run(check_db())

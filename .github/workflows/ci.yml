@@ -32,15 +32,15 @@ jobs:
         source .venv/bin/activate
         uv sync --extra dev
     
-    - name: Check import sorting with isort
+    - name: Check import sorting with ruff
       run: |
         source .venv/bin/activate
-        python -m isort --check-only --diff .
-    
-    - name: Check code formatting with black
+        python -m ruff check . --select I --diff
+
+    - name: Check code formatting with ruff
       run: |
         source .venv/bin/activate
-        python -m black --check --diff .
+        python -m ruff format . --check --diff
     
     - name: Lint with ruff (strict mode)
       run: |
@@ -106,13 +106,13 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         source .venv/bin/activate
-        python -c "import asyncio; from core.settings import init_default_settings; asyncio.run(init_default_settings())"
+        python -c "import asyncio; from core.control_plane.settings import init_default_settings; asyncio.run(init_default_settings())"
     
     - name: Initialize test database (Windows)
       if: runner.os == 'Windows'
       run: |
         .venv\Scripts\Activate.ps1
-        python -c "import asyncio; from core.settings import init_default_settings; asyncio.run(init_default_settings())"
+        python -c "import asyncio; from core.control_plane.settings import init_default_settings; asyncio.run(init_default_settings())"
     
     - name: Run tests (Linux)
       if: runner.os == 'Linux' && matrix.python-version != '3.12'

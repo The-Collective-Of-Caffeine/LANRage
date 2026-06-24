@@ -12,7 +12,6 @@ import sys
 import tempfile
 import urllib.request
 
-
 WINDOWS_MSI_BASE = "https://download.wireguard.com/windows-client"
 WIREGUARD_PATHS = [
     "C:\\Program Files\\WireGuard\\wireguard.exe",
@@ -74,17 +73,17 @@ def is_wireguard_installed() -> bool:
                 _add_to_path(marker_path)
                 return True
             return False
-        else:
-            result = subprocess.run(
-                ["which", "wg"], capture_output=True, text=True, timeout=10
-            )
-            return result.returncode == 0
+        result = subprocess.run(
+            ["which", "wg"], capture_output=True, text=True, timeout=10
+        )
+        return result.returncode == 0
     except (subprocess.TimeoutExpired, FileNotFoundError):
         return False
 
 
 def install_windows() -> bool:
     import ctypes
+
     try:
         if not ctypes.windll.shell32.IsUserAnAdmin():
             print("Administrator privileges required to install WireGuard")
@@ -119,7 +118,7 @@ def install_windows() -> bool:
                         _add_to_path(path)
                         _write_marker(path)
                         return True
-                prog_files = os.environ.get("ProgramFiles", "C:\\Program Files")
+                prog_files = os.environ.get("PROGRAMFILES", "C:\\Program Files")
                 fallback = os.path.join(prog_files, "WireGuard", "wireguard.exe")
                 if os.path.exists(fallback):
                     _add_to_path(fallback)
@@ -127,11 +126,10 @@ def install_windows() -> bool:
                     return True
                 _write_marker(prog_files + "\\WireGuard\\wireguard.exe")
                 return True
-            else:
-                print(f"Installation failed (code: {result.returncode})")
-                if result.stderr:
-                    print(f"  {result.stderr}")
-                return False
+            print(f"Installation failed (code: {result.returncode})")
+            if result.stderr:
+                print(f"  {result.stderr}")
+            return False
     except Exception as e:
         print(f"Installation failed: {e}")
         return False

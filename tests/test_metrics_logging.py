@@ -66,9 +66,9 @@ async def test_record_latency_logs_quality_events(metrics_collector, caplog):
 
     # Check logs contain quality information
     log_text = caplog.text.lower()
-    assert (
-        "quality" in log_text or "latency" in log_text or peer_id in log_text
-    ), "Expected latency/quality logging"
+    assert "quality" in log_text or "latency" in log_text or peer_id in log_text, (
+        "Expected latency/quality logging"
+    )
 
 
 @pytest.mark.asyncio
@@ -96,6 +96,6 @@ async def test_game_session_logging(metrics_collector, caplog):
 
     # Check end logs
     log_text = caplog.text.lower()
-    assert (
-        "end" in log_text or "stop" in log_text or "game" in log_text
-    ), "Expected game session end logging"
+    assert "end" in log_text or "stop" in log_text or "game" in log_text, (
+        "Expected game session end logging"
+    )

@@ -74,7 +74,7 @@ class PerformanceProfiler:
             finally:
                 elapsed = time.perf_counter() - start
                 self._record_timing(func_name, elapsed)
-                logger.debug(f"Profiled {func_name}: {elapsed*1000:.2f}ms")
+                logger.debug(f"Profiled {func_name}: {elapsed * 1000:.2f}ms")
 
         @functools.wraps(func)
         async def async_wrapper(*args, **kwargs):
@@ -93,7 +93,7 @@ class PerformanceProfiler:
             finally:
                 elapsed = time.perf_counter() - start
                 self._record_timing(func_name, elapsed)
-                logger.debug(f"Profiled async {func_name}: {elapsed*1000:.2f}ms")
+                logger.debug(f"Profiled async {func_name}: {elapsed * 1000:.2f}ms")
 
         if asyncio.iscoroutinefunction(func):
             return async_wrapper
@@ -198,10 +198,10 @@ class PerformanceProfiler:
             for i, (func_name, stats) in enumerate(hotspots, 1):
                 logger.info(f"  {i}. {func_name}")
                 logger.info(f"     Calls: {stats['calls']}")
-                logger.info(f"     Total: {stats['total_time']*1000:.2f}ms")
-                logger.info(f"     Avg: {stats['avg_time']*1000:.2f}ms")
-                logger.info(f"     Min: {stats['min_time']*1000:.2f}ms")
-                logger.info(f"     Max: {stats['max_time']*1000:.2f}ms")
+                logger.info(f"     Total: {stats['total_time'] * 1000:.2f}ms")
+                logger.info(f"     Avg: {stats['avg_time'] * 1000:.2f}ms")
+                logger.info(f"     Min: {stats['min_time'] * 1000:.2f}ms")
+                logger.info(f"     Max: {stats['max_time'] * 1000:.2f}ms")
                 if stats["errors"] > 0:
                     logger.warning(f"     Errors: {stats['errors']}")
 
@@ -210,7 +210,7 @@ class PerformanceProfiler:
         if slow_funcs:
             logger.warning("Slow Functions (avg > 10ms):")
             for func_name, stats in slow_funcs:
-                logger.warning(f"  {func_name}: {stats['avg_time']*1000:.2f}ms avg")
+                logger.warning(f"  {func_name}: {stats['avg_time'] * 1000:.2f}ms avg")
 
         # Summary
         total_calls = sum(s["calls"] for s in self.function_stats.values())
@@ -219,7 +219,7 @@ class PerformanceProfiler:
 
         logger.info("Summary:")
         logger.info(f"  Total function calls: {total_calls}")
-        logger.info(f"  Total profiled time: {total_time*1000:.2f}ms")
+        logger.info(f"  Total profiled time: {total_time * 1000:.2f}ms")
         logger.info(f"  Total errors: {total_errors}")
         logger.info(f"  Unique functions: {len(self.function_stats)}")
 

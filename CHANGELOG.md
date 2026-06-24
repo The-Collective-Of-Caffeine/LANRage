@@ -5,7 +5,41 @@ All notable changes to LANrage will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.1.0] - 2026-06-24
+
+### Added
+- **WireGuard MSI direct install** (`scripts/install_wireguard.py`)
+  - Rewrote Windows WireGuard install logic to download MSI directly + `msiexec /qn` for reliable silent install.
+  - Detects Windows architecture (amd64/arm64/x86) for correct MSI URL.
+  - Writes `.wireguard_installed` marker file on success.
+  - Checks Program Files, Program Files (x86), and AppData install paths.
+  - Injects WireGuard directory into `os.environ["PATH"]` for current session.
+- **WireGuard install marker file** (`.wireguard_installed`)
+  - Decouples WireGuard detection from PATH propagation across terminal boundaries.
+  - Checked by `network.py:_check_wireguard()`, `setup_project.py`, and batch scripts.
+
+### Changed
+- **Dependency management**: Removed `requirements.txt` — all deps managed via `pyproject.toml` + `uv sync --extra dev`.
+- **CI/CD workflows**: Replaced `uv pip install -r requirements.txt` with `uv sync --extra dev` across `ci.yml`, `pylint.yml`, `release.yml`.
+- **CI lint tools**: Replaced `isort` + `black` with `ruff check` (covers isort) + `ruff format --check` (covers black) in `ci.yml` and `ruff.yml`.
+- **CI test DB init**: Fixed stale import `from core.settings` → `from core.control_plane.settings`.
+- **Batch scripts**: Steps 3-5 run inline (no popup windows), `uv sync --extra dev` retains dev deps.
+  - Merged useful error handling from `install_and_run_advanced.bat` into `install_and_run.bat`.
+  - Deleted `install_and_run_advanced.bat`.
+  - Removed admin restart conditional goto blocks (were causing hangs).
+- **`setup_project.py`**: Removed all WireGuard install logic — only checks existence via PATH/marker/common paths.
+- **`network.py:_check_wireguard()`**: Added marker file + common install path fallback; injects WireGuard into `os.environ["PATH"]`.
+- **Ruff formatting**: Applied `ruff format` across all 84 Python files for consistent style.
+- **Docs**: Updated `CONTRIBUTING.md`, `MODERNIZATION.md`, `.kiro` steering files to remove `requirements.txt` references.
+
+### Removed
+- **`requirements.txt`**: Superseded by `pyproject.toml` + `uv sync --extra dev`.
+- **`scripts/windows/install_and_run_advanced.bat`**: Merged into `install_and_run.bat`.
+
+### Fixed
+- **WireGuard install reliability**: MSI direct download replaces NSIS installer `/S` for silent install.
+
+## [2.0.1] - 2026-06-24
 
 ### Added
 - **Control server authentication and metrics endpoint** (`api/server.py`, `servers/control_server.py`, `core/control_plane/control_client.py`, `core/control_plane/party.py`)

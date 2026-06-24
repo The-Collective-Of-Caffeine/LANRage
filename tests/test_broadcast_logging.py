@@ -26,9 +26,9 @@ async def test_broadcast_start_logs_listener_count(broadcast_emulator, caplog):
 
     # Check logs
     log_text = caplog.text
-    assert (
-        "listeners" in log_text.lower() or "broadcast" in log_text.lower()
-    ), "Expected broadcast start logging"
+    assert "listeners" in log_text.lower() or "broadcast" in log_text.lower(), (
+        "Expected broadcast start logging"
+    )
 
     await broadcast_emulator.stop()
 
@@ -47,9 +47,9 @@ async def test_broadcast_stop_logs_completion(broadcast_emulator, caplog):
 
     # Check logs
     log_text = caplog.text.lower()
-    assert (
-        "stop" in log_text or "destroy" in log_text
-    ), "Expected broadcast stop logging"
+    assert "stop" in log_text or "destroy" in log_text, (
+        "Expected broadcast stop logging"
+    )
 
 
 @pytest.mark.asyncio

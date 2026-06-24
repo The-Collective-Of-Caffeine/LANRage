@@ -672,7 +672,7 @@ class GameDetector:
         print(f"   Optimizing for {profile.name}...")
 
         # Set context for detection event
-        set_context(correlation_id_val=f"game_{game_id}_{int(time.time()*1000)}")
+        set_context(correlation_id_val=f"game_{game_id}_{int(time.time() * 1000)}")
         logger.info(
             f"Game detected: {profile.name} (game_id={game_id}, ports={profile.ports})"
         )

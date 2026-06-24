@@ -38,12 +38,12 @@ class TestPerformanceProfiling:
         min_time = min(times)
 
         print("\n📊 Config Load Performance:")
-        print(f"  Average: {avg_time*1000:.2f}ms")
-        print(f"  Min: {min_time*1000:.2f}ms")
-        print(f"  Max: {max_time*1000:.2f}ms")
+        print(f"  Average: {avg_time * 1000:.2f}ms")
+        print(f"  Min: {min_time * 1000:.2f}ms")
+        print(f"  Max: {max_time * 1000:.2f}ms")
 
         # Config load should be fast (<10ms average)
-        assert avg_time < 0.01, f"Config load too slow: {avg_time*1000:.2f}ms"
+        assert avg_time < 0.01, f"Config load too slow: {avg_time * 1000:.2f}ms"
 
     def test_ipam_allocation_performance(self):
         """Profile IP address allocation performance."""
@@ -62,12 +62,12 @@ class TestPerformanceProfiling:
         max_time = max(times)
 
         print("\n📊 IPAM Allocation Performance:")
-        print(f"  Average: {avg_time*1000000:.2f}µs")
-        print(f"  Max: {max_time*1000000:.2f}µs")
+        print(f"  Average: {avg_time * 1000000:.2f}µs")
+        print(f"  Max: {max_time * 1000000:.2f}µs")
         print(f"  Total IPs allocated: {iterations}")
 
         # IP allocation should be very fast (<600µs average, allowing for Python overhead and CI variability)
-        assert avg_time < 0.0006, f"IP allocation too slow: {avg_time*1000000:.2f}µs"
+        assert avg_time < 0.0006, f"IP allocation too slow: {avg_time * 1000000:.2f}µs"
 
     def test_ipam_lookup_performance(self):
         """Profile IP address lookup performance."""
@@ -94,12 +94,12 @@ class TestPerformanceProfiling:
         max_time = max(times)
 
         print("\n📊 IPAM Lookup Performance:")
-        print(f"  Average: {avg_time*1000000:.2f}µs")
-        print(f"  Max: {max_time*1000000:.2f}µs")
-        print(f"  Lookups per second: {1/avg_time:.0f}")
+        print(f"  Average: {avg_time * 1000000:.2f}µs")
+        print(f"  Max: {max_time * 1000000:.2f}µs")
+        print(f"  Lookups per second: {1 / avg_time:.0f}")
 
         # Lookup should be very fast (<10µs average)
-        assert avg_time < 0.00001, f"IP lookup too slow: {avg_time*1000000:.2f}µs"
+        assert avg_time < 0.00001, f"IP lookup too slow: {avg_time * 1000000:.2f}µs"
 
     @pytest.mark.asyncio
     async def test_metrics_collection_performance(self):
@@ -123,12 +123,12 @@ class TestPerformanceProfiling:
         max_time = max(times)
 
         print("\n📊 Metrics Collection Performance:")
-        print(f"  Average: {avg_time*1000:.2f}ms")
-        print(f"  Max: {max_time*1000:.2f}ms")
-        print(f"  Collections per second: {1/avg_time:.0f}")
+        print(f"  Average: {avg_time * 1000:.2f}ms")
+        print(f"  Max: {max_time * 1000:.2f}ms")
+        print(f"  Collections per second: {1 / avg_time:.0f}")
 
         # Metrics collection should be fast (<5ms average)
-        assert avg_time < 0.005, f"Metrics collection too slow: {avg_time*1000:.2f}ms"
+        assert avg_time < 0.005, f"Metrics collection too slow: {avg_time * 1000:.2f}ms"
 
     def test_utility_functions_performance(self):
         """Profile utility function performance."""
@@ -194,11 +194,11 @@ class TestPerformanceProfiling:
 
         print("\n📊 Game Profile Loading Performance:")
         print(f"  Total profiles: {profile_count}")
-        print(f"  Total time: {total_time*1000:.2f}ms")
-        print(f"  Average per profile: {avg_time*1000:.2f}ms")
+        print(f"  Total time: {total_time * 1000:.2f}ms")
+        print(f"  Average per profile: {avg_time * 1000:.2f}ms")
 
         # Loading all profiles should be fast (<100ms total)
-        assert total_time < 0.1, f"Profile loading too slow: {total_time*1000:.2f}ms"
+        assert total_time < 0.1, f"Profile loading too slow: {total_time * 1000:.2f}ms"
 
     def test_memory_usage_baseline(self):
         """Measure baseline memory usage of core components."""
@@ -258,14 +258,14 @@ class TestPerformanceProfiling:
 
         print("\n📊 Concurrent Operations Performance:")
         print(f"  Total operations: {iterations}")
-        print(f"  Total time: {total_time*1000:.2f}ms")
-        print(f"  Average per operation: {avg_time*1000:.2f}ms")
+        print(f"  Total time: {total_time * 1000:.2f}ms")
+        print(f"  Average per operation: {avg_time * 1000:.2f}ms")
         print(f"  Operations per second: {ops_per_sec:.0f}")
 
         # Should handle concurrent operations efficiently
-        assert (
-            total_time < 1.0
-        ), f"Concurrent operations too slow: {total_time*1000:.2f}ms"
+        assert total_time < 1.0, (
+            f"Concurrent operations too slow: {total_time * 1000:.2f}ms"
+        )
         assert ops_per_sec > 50, f"Throughput too low: {ops_per_sec:.0f} ops/sec"
 
 
@@ -305,14 +305,14 @@ class TestBottleneckIdentification:
         for module, import_time in sorted(
             import_times.items(), key=lambda x: x[1], reverse=True
         ):
-            print(f"  {module}: {import_time*1000:.2f}ms")
+            print(f"  {module}: {import_time * 1000:.2f}ms")
 
         # Identify slow imports (>100ms)
         slow_imports = {m: t for m, t in import_times.items() if t > 0.1}
         if slow_imports:
             print("\n⚠️  Slow imports detected:")
             for module, import_time in slow_imports.items():
-                print(f"  {module}: {import_time*1000:.2f}ms")
+                print(f"  {module}: {import_time * 1000:.2f}ms")
 
     def test_identify_hot_paths(self):
         """Identify frequently called code paths."""
@@ -400,9 +400,9 @@ class TestBottleneckIdentification:
             results.items(), key=lambda x: x[1]["avg"], reverse=True
         ):
             print(f"  {op_name}:")
-            print(f"    Average: {stats['avg']*1000:.2f}ms")
-            print(f"    Max: {stats['max']*1000:.2f}ms")
-            print(f"    Min: {stats['min']*1000:.2f}ms")
+            print(f"    Average: {stats['avg'] * 1000:.2f}ms")
+            print(f"    Max: {stats['max'] * 1000:.2f}ms")
+            print(f"    Min: {stats['min'] * 1000:.2f}ms")
 
 
 class TestPerformanceRegression:
@@ -436,13 +436,13 @@ class TestPerformanceRegression:
 
         print("\n📊 IPAM Scaling Performance:")
         for count, avg_time in results.items():
-            print(f"  {count} peers: {avg_time*1000000:.2f}µs")
+            print(f"  {count} peers: {avg_time * 1000000:.2f}µs")
 
         # Performance should not degrade significantly with scale
         # Allow 2x slowdown from 10 to 1000 peers
-        assert (
-            results[1000] < results[10] * 2
-        ), "IPAM performance degrades too much with scale"
+        assert results[1000] < results[10] * 2, (
+            "IPAM performance degrades too much with scale"
+        )
 
     @pytest.mark.asyncio
     async def test_metrics_scaling(self):
@@ -477,12 +477,12 @@ class TestPerformanceRegression:
 
         print("\n📊 Metrics Scaling Performance:")
         for count, avg_time in results.items():
-            print(f"  {count} data points: {avg_time*1000:.2f}ms")
+            print(f"  {count} data points: {avg_time * 1000:.2f}ms")
 
         # Performance should remain relatively stable
-        assert (
-            results[5000] < results[100] * 3
-        ), "Metrics performance degrades too much with data"
+        assert results[5000] < results[100] * 3, (
+            "Metrics performance degrades too much with data"
+        )
 
 
 def run_full_profile():

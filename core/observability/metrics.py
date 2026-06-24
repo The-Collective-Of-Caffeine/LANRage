@@ -909,7 +909,9 @@ class MetricsCollector:
                 else (
                     "good"
                     if peer.quality_score >= 60
-                    else "fair" if peer.quality_score >= 40 else "poor"
+                    else "fair"
+                    if peer.quality_score >= 40
+                    else "poor"
                 )
             ),
             "quality_trend": peer.quality_trend,

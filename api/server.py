@@ -763,7 +763,13 @@ async def start_api_server(
     browser=None,
 ):
     """Start the API server"""
-    global party_manager, network_manager, metrics_collector, discord_integration, server_browser, update_manager
+    global \
+        party_manager, \
+        network_manager, \
+        metrics_collector, \
+        discord_integration, \
+        server_browser, \
+        update_manager
     party_manager = party
     network_manager = network
     metrics_collector = metrics

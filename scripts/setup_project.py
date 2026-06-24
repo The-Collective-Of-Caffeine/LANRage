@@ -97,9 +97,9 @@ def main():
                     wg_found = True
             except Exception:
                 pass
-        elif os.path.exists("C:\\Program Files\\WireGuard\\wireguard.exe"):
-            wg_found = True
-        elif os.path.exists("C:\\Program Files (x86)\\WireGuard\\wireguard.exe"):
+        elif os.path.exists(
+            "C:\\Program Files\\WireGuard\\wireguard.exe"
+        ) or os.path.exists("C:\\Program Files (x86)\\WireGuard\\wireguard.exe"):
             wg_found = True
     else:
         wg_found = run_command(["which", "wg"], check=False)

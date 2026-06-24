@@ -155,7 +155,7 @@ class PerformanceBenchmark:
         end = time.perf_counter()
         startup_time = end - start
 
-        print(f"   Startup time: {startup_time*1000:.2f}ms")
+        print(f"   Startup time: {startup_time * 1000:.2f}ms")
 
         if startup_time < 0.1:
             print("   ✅ Excellent startup time")
@@ -187,7 +187,7 @@ class PerformanceBenchmark:
         end = time.perf_counter()
         ip_alloc_time = (end - start) / iterations
 
-        print(f"   IP allocation: {ip_alloc_time*1000000:.2f}µs per operation")
+        print(f"   IP allocation: {ip_alloc_time * 1000000:.2f}µs per operation")
 
         # Benchmark metrics collection
         start = time.perf_counter()
@@ -196,7 +196,7 @@ class PerformanceBenchmark:
         end = time.perf_counter()
         metrics_time = (end - start) / iterations
 
-        print(f"   Metrics collection: {metrics_time*1000:.2f}ms per operation")
+        print(f"   Metrics collection: {metrics_time * 1000:.2f}ms per operation")
 
         # Overall assessment
         if ip_alloc_time < 0.0001 and metrics_time < 0.005:
@@ -231,7 +231,7 @@ class PerformanceBenchmark:
             end = time.perf_counter()
 
             lookup_time = (end - start) / iterations
-            print(f"   {count:4d} peers: {lookup_time*1000000:.2f}µs lookup time")
+            print(f"   {count:4d} peers: {lookup_time * 1000000:.2f}µs lookup time")
 
         print("   ✅ Scaling benchmark complete")
 

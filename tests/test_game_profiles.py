@@ -95,80 +95,82 @@ class TestGameProfiles:
 
             # String fields
             assert isinstance(game_data["name"], str), f"{game_id}: name must be string"
-            assert isinstance(
-                game_data["executable"], str
-            ), f"{game_id}: executable must be string"
-            assert isinstance(
-                game_data["protocol"], str
-            ), f"{game_id}: protocol must be string"
-            assert isinstance(
-                game_data["description"], str
-            ), f"{game_id}: description must be string"
-            assert isinstance(
-                game_data["packet_priority"], str
-            ), f"{game_id}: packet_priority must be string"
+            assert isinstance(game_data["executable"], str), (
+                f"{game_id}: executable must be string"
+            )
+            assert isinstance(game_data["protocol"], str), (
+                f"{game_id}: protocol must be string"
+            )
+            assert isinstance(game_data["description"], str), (
+                f"{game_id}: description must be string"
+            )
+            assert isinstance(game_data["packet_priority"], str), (
+                f"{game_id}: packet_priority must be string"
+            )
 
             # List fields
-            assert isinstance(
-                game_data["ports"], list
-            ), f"{game_id}: ports must be list"
-            assert all(
-                isinstance(p, int) for p in game_data["ports"]
-            ), f"{game_id}: ports must be integers"
+            assert isinstance(game_data["ports"], list), (
+                f"{game_id}: ports must be list"
+            )
+            assert all(isinstance(p, int) for p in game_data["ports"]), (
+                f"{game_id}: ports must be integers"
+            )
 
             # Boolean fields
-            assert isinstance(
-                game_data["broadcast"], bool
-            ), f"{game_id}: broadcast must be boolean"
-            assert isinstance(
-                game_data["multicast"], bool
-            ), f"{game_id}: multicast must be boolean"
-            assert isinstance(
-                game_data["low_latency"], bool
-            ), f"{game_id}: low_latency must be boolean"
-            assert isinstance(
-                game_data["high_bandwidth"], bool
-            ), f"{game_id}: high_bandwidth must be boolean"
+            assert isinstance(game_data["broadcast"], bool), (
+                f"{game_id}: broadcast must be boolean"
+            )
+            assert isinstance(game_data["multicast"], bool), (
+                f"{game_id}: multicast must be boolean"
+            )
+            assert isinstance(game_data["low_latency"], bool), (
+                f"{game_id}: low_latency must be boolean"
+            )
+            assert isinstance(game_data["high_bandwidth"], bool), (
+                f"{game_id}: high_bandwidth must be boolean"
+            )
 
             # Integer fields
-            assert isinstance(
-                game_data["keepalive"], int
-            ), f"{game_id}: keepalive must be integer"
+            assert isinstance(game_data["keepalive"], int), (
+                f"{game_id}: keepalive must be integer"
+            )
             assert isinstance(game_data["mtu"], int), f"{game_id}: mtu must be integer"
 
             # Optional mod support fields
             if "mod_support" in game_data:
                 mod_support = game_data["mod_support"]
-                assert isinstance(
-                    mod_support, dict
-                ), f"{game_id}: mod_support must be object"
+                assert isinstance(mod_support, dict), (
+                    f"{game_id}: mod_support must be object"
+                )
                 if "mode" in mod_support:
-                    assert isinstance(
-                        mod_support["mode"], str
-                    ), f"{game_id}: mod_support.mode must be string"
+                    assert isinstance(mod_support["mode"], str), (
+                        f"{game_id}: mod_support.mode must be string"
+                    )
                 if (
                     "native_provider" in mod_support
                     and mod_support["native_provider"] is not None
                 ):
-                    assert isinstance(
-                        mod_support["native_provider"], str
-                    ), f"{game_id}: mod_support.native_provider must be string or null"
+                    assert isinstance(mod_support["native_provider"], str), (
+                        f"{game_id}: mod_support.native_provider must be string or null"
+                    )
                 if "verify_method" in mod_support:
-                    assert isinstance(
-                        mod_support["verify_method"], str
-                    ), f"{game_id}: mod_support.verify_method must be string"
+                    assert isinstance(mod_support["verify_method"], str), (
+                        f"{game_id}: mod_support.verify_method must be string"
+                    )
                 if "required_artifacts" in mod_support:
-                    assert isinstance(
-                        mod_support["required_artifacts"], list
-                    ), f"{game_id}: mod_support.required_artifacts must be list"
+                    assert isinstance(mod_support["required_artifacts"], list), (
+                        f"{game_id}: mod_support.required_artifacts must be list"
+                    )
                     assert all(
                         isinstance(item, str)
                         for item in mod_support["required_artifacts"]
-                    ), f"{game_id}: mod_support.required_artifacts entries must be strings"
+                    ), (
+                        f"{game_id}: mod_support.required_artifacts entries must be strings"
+                    )
                 if "notes" in mod_support:
-                    assert isinstance(
-                        mod_support["notes"], str
-                    ), f"{game_id}: mod_support.notes must be string"
+                    assert isinstance(mod_support["notes"], str), (
+                        f"{game_id}: mod_support.notes must be string"
+                    )
 
     @pytest.mark.parametrize("profile_path", get_all_game_profiles())
     def test_profile_field_values(self, profile_path):
@@ -196,19 +198,19 @@ class TestGameProfiles:
 
             # Ports must be in valid range
             for port in game_data["ports"]:
-                assert (
-                    1 <= port <= 65535
-                ), f"{game_id}: port {port} out of range (1-65535)"
+                assert 1 <= port <= 65535, (
+                    f"{game_id}: port {port} out of range (1-65535)"
+                )
 
             # Keepalive must be reasonable
-            assert (
-                5 <= game_data["keepalive"] <= 60
-            ), f"{game_id}: keepalive {game_data['keepalive']} out of range (5-60)"
+            assert 5 <= game_data["keepalive"] <= 60, (
+                f"{game_id}: keepalive {game_data['keepalive']} out of range (5-60)"
+            )
 
             # MTU must be reasonable
-            assert (
-                1280 <= game_data["mtu"] <= 1500
-            ), f"{game_id}: MTU {game_data['mtu']} out of range (1280-1500)"
+            assert 1280 <= game_data["mtu"] <= 1500, (
+                f"{game_id}: MTU {game_data['mtu']} out of range (1280-1500)"
+            )
 
             # Optional mod support validation
             if "mod_support" in game_data:
@@ -218,7 +220,9 @@ class TestGameProfiles:
                     "native",
                     "managed",
                     "hybrid",
-                ], f"{game_id}: mod_support.mode must be 'native', 'managed', or 'hybrid'"
+                ], (
+                    f"{game_id}: mod_support.mode must be 'native', 'managed', or 'hybrid'"
+                )
 
                 verify_method = mod_support.get("verify_method", "id_list")
                 assert verify_method in [
@@ -237,9 +241,9 @@ class TestGameProfiles:
         # Filter out comment fields
         game_ids = [gid for gid in profile if not gid.startswith("_")]
 
-        assert len(game_ids) == len(
-            set(game_ids)
-        ), f"Duplicate game IDs found in {profile_path}"
+        assert len(game_ids) == len(set(game_ids)), (
+            f"Duplicate game IDs found in {profile_path}"
+        )
 
     def test_no_duplicate_game_ids_across_profiles(self):
         """Test that there are no duplicate game IDs across all profiles."""
@@ -266,8 +270,8 @@ class TestGameProfiles:
             total_games += game_count
 
         # We should have at least 75 games
-        assert (
-            total_games >= 75
-        ), f"Only {total_games} games found, expected at least 75"
+        assert total_games >= 75, (
+            f"Only {total_games} games found, expected at least 75"
+        )
 
         print(f"\n✅ Total games validated: {total_games}")

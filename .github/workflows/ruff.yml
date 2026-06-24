@@ -110,6 +110,6 @@ jobs:
           echo "🎯 Zero warnings, zero errors"
         else
           echo "❌ Code quality checks failed"
-          echo "Please run: ruff check --fix . && black . && isort ."
+          echo "Please run: ruff check --fix . && ruff format ."
           exit 1
         fi

@@ -21,6 +21,9 @@ build/
 *.swp
 *.swo
 
+# Ruff cache
+.ruff_cache/
+
 # WireGuard keys
 *.key
 *.conf

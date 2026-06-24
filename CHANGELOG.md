@@ -5,6 +5,21 @@ All notable changes to LANrage will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2026-06-24
+
+### Changed
+- **Removed stale dev dependencies** (`pyproject.toml`)
+  - Removed `black` and `isort` from dev deps — CI already uses `ruff` exclusively.
+  - Deleted orphaned `[tool.black]` and `[tool.isort]` config sections.
+- **Consolidated pylint config** (`pyproject.toml`, `.pylintrc`)
+  - Merged `.pylintrc` settings into `[tool.pylint.*]` sections, deleted `.pylintrc`.
+- **Cleaned up obsolete files**
+  - Deleted `setup.py` (PEP 621 build via `pyproject.toml` supersedes it).
+  - Deleted `.env.example` (deprecated since v1.2.5).
+
+### Fixed
+- **`.gitignore`**: Added `.ruff_cache/` entry.
+
 ## [2.1.0] - 2026-06-24
 
 ### Added

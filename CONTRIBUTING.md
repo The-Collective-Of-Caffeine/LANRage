@@ -468,7 +468,7 @@ lanrage/
 ├── game_profiles/    # Game detection profiles
 ├── .kiro/            # Kiro AI configuration
 ├── lanrage.py        # Main entry point
-└── requirements.txt  # Dependencies
+└── pyproject.toml      # Dependencies & project config
 ```
 
 ### Key Modules

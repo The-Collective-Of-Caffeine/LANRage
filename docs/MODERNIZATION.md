@@ -80,11 +80,14 @@ uv pip install -e ".[dev]"
 uv pip install -e .
 ```
 
-### Method 2: Using requirements.txt (Backwards Compatible)
+### Method 2: Using pyproject.toml (uv sync)
 
 ```bash
-# Install all dependencies
-uv pip install -r requirements.txt
+# Install all dependencies (including dev)
+uv sync --extra dev
+
+# Install production only
+uv sync
 ```
 
 ## New Development Workflow
@@ -138,8 +141,8 @@ ruff check .
 
 ### For Existing Developers
 
-1. **No immediate action required** - `requirements.txt` still works
-2. **Recommended**: Switch to `uv pip install -e ".[dev]"` for faster installs
+1. **Migration complete** - `requirements.txt` has been removed
+2. **Use**: `uv sync --extra dev` for full dependency install
 3. **Optional**: Start using `ruff check` instead of multiple linters
 
 ### For CI/CD
@@ -238,8 +241,6 @@ Using `pyproject.toml` with uv:
 
 | Method | Time | Notes |
 |--------|------|-------|
-| pip + requirements.txt | ~30-45s | Traditional |
-| uv + requirements.txt | ~5-8s | Fast resolver |
 | uv + pyproject.toml | ~4-6s | Optimized |
 
 ## Future Enhancements

@@ -58,12 +58,8 @@ uv venv --python 3.12
 .venv\Scripts\activate.bat  # Windows
 source .venv/bin/activate   # Linux/Mac
 
-# Install dependencies
-uv pip install -r requirements.txt
-
-# Copy environment template
-copy .env.example .env  # Windows
-cp .env.example .env    # Linux/Mac
+# Install all dependencies (including dev)
+uv sync --extra dev
 ```
 
 ## Code Quality Setup
@@ -75,8 +71,8 @@ cp .env.example .env    # Linux/Mac
 .venv\Scripts\activate.bat  # Windows
 source .venv/bin/activate   # Linux/Mac
 
-# Install code quality tools (already in requirements.txt)
-uv pip install -r requirements.txt
+# Install code quality tools (already in pyproject.toml dev deps)
+uv sync --extra dev
 ```
 
 ### Code Quality Tools
@@ -180,7 +176,7 @@ pre-commit install
 source .venv/bin/activate   # Linux/Mac
 
 # 2. Update dependencies (if needed)
-uv pip install -r requirements.txt
+uv sync --extra dev
 
 # 3. Run LANrage
 python lanrage.py
@@ -223,12 +219,7 @@ git commit -m "your message"
 ```bash
 # 1. Add dependency to pyproject.toml [project.dependencies] section
 # 2. Install with uv
-uv pip install -e ".[dev]"  # Install all (production + dev)
-uv pip install -e .         # Install only production
-
-# Or for backwards compatibility, update requirements.txt
-uv pip install package-name
-uv pip freeze > requirements.txt
+uv sync --extra dev  # Install all (production + dev)
 ```
 
 ### Never use pip directly
@@ -241,7 +232,7 @@ pip install package-name
 ✅ Good:
 ```bash
 # Add to pyproject.toml first, then:
-uv pip install -e ".[dev]"
+uv sync --extra dev
 
 # Or for quick testing:
 uv pip install package-name
@@ -260,7 +251,7 @@ rmdir /s .venv  # Windows
 uv venv --python 3.12
 .venv\Scripts\activate.bat  # Windows
 source .venv/bin/activate   # Linux/Mac
-uv pip install -r requirements.txt
+uv sync --extra dev
 ```
 
 ### Python Version Issues
@@ -312,7 +303,7 @@ source .venv/bin/activate   # Linux/Mac
 .venv\Scripts\python.exe -m pytest tests/               # Test
 
 # Add dependency (edit pyproject.toml first, then)
-uv pip install -e ".[dev]"  # Install all
+uv sync --extra dev  # Install all
 ```
 
 ## IDE Configuration

@@ -17,7 +17,6 @@ lanrage/
 ├── lanrage.py        # Main entry point
 ├── setup.py          # Setup script
 ├── pyproject.toml    # PEP 621 project metadata and dependencies
-├── requirements.txt  # Python dependencies (backwards compatibility)
 ├── .pylintrc         # Pylint configuration (legacy)
 └── CHANGELOG.md      # Version history
 ```
@@ -119,7 +118,7 @@ Project documentation (1650+ lines).
 - `lanrage.py` - Main entry point, initializes all components
 - `setup.py` - One-time setup script for dependencies
 - `pyproject.toml` - **PEP 621 project metadata and dependencies** (single source of truth)
-- `requirements.txt` - Python package dependencies (backwards compatibility)
+- `pyproject.toml` - Python project metadata and dependencies
 - `.env.example` - Example environment configuration
 - `.pylintrc` - Pylint configuration (legacy, migrated to pyproject.toml)
 - `CONTRIBUTING.md` - Contribution guidelines

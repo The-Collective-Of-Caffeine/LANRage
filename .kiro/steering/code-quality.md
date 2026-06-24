@@ -246,10 +246,7 @@ All code quality tools are in `pyproject.toml` dev dependencies:
 
 ```bash
 # Install all dependencies including dev tools
-uv pip install -e ".[dev]"
-
-# Or use requirements.txt (backwards compatibility)
-uv pip install -r requirements.txt
+uv sync --extra dev
 ```
 
 Tools included:

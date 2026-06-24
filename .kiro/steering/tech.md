@@ -64,13 +64,10 @@ python setup.py
 source .venv/bin/activate   # Linux/Mac
 
 # Install all dependencies (production + dev)
-uv pip install -e ".[dev]"
+uv sync --extra dev
 
 # Or install only production dependencies
-uv pip install -e .
-
-# Or use requirements.txt (backwards compatibility)
-uv pip install -r requirements.txt
+uv sync
 ```
 
 ### Running

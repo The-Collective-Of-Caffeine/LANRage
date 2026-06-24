@@ -30,7 +30,7 @@ jobs:
     - name: Install dependencies
       run: |
         source .venv/bin/activate
-        uv pip install -r requirements.txt
+        uv sync --extra dev
     
     - name: Check import sorting with isort
       run: |
@@ -94,13 +94,13 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         source .venv/bin/activate
-        uv pip install -r requirements.txt
+        uv sync --extra dev
     
     - name: Install dependencies (Windows)
       if: runner.os == 'Windows'
       run: |
         .venv\Scripts\Activate.ps1
-        uv pip install -r requirements.txt
+        uv sync --extra dev
     
     - name: Initialize test database (Linux)
       if: runner.os == 'Linux'
@@ -162,7 +162,7 @@ jobs:
     - name: Install dependencies
       run: |
         source .venv/bin/activate
-        uv pip install -r requirements.txt
+        uv sync --extra dev
         uv pip install safety bandit
     
     - name: Check for known vulnerabilities

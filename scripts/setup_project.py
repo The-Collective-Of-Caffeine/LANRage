@@ -5,6 +5,8 @@ Handles initial setup and dependency installation
 """
 
 import asyncio
+import os
+import platform
 import subprocess
 import sys
 from pathlib import Path
@@ -69,7 +71,7 @@ def main():
 
     # Install dependencies
     print("Installing dependencies...")
-    if not run_command(["uv", "pip", "install", "-r", "requirements.txt"]):
+    if not run_command(["uv", "sync", "--extra", "dev"]):
         sys.exit(1)
     print("✓ Dependencies installed")
 
@@ -80,6 +82,36 @@ def main():
     except Exception as e:
         print(f"⚠ Could not initialize database: {e}")
         print("  Settings will be initialized on first run")
+
+    # Check WireGuard
+    print("\nChecking WireGuard...")
+    wg_found = False
+    if platform.system() == "Windows":
+        if run_command(["where", "wireguard"], check=False):
+            wg_found = True
+        elif os.path.exists(".wireguard_installed"):
+            try:
+                with open(".wireguard_installed") as _f:
+                    _p = _f.read().strip()
+                if _p and os.path.exists(_p):
+                    wg_found = True
+            except Exception:
+                pass
+        elif os.path.exists("C:\\Program Files\\WireGuard\\wireguard.exe"):
+            wg_found = True
+        elif os.path.exists("C:\\Program Files (x86)\\WireGuard\\wireguard.exe"):
+            wg_found = True
+    else:
+        wg_found = run_command(["which", "wg"], check=False)
+
+    if wg_found:
+        print("✓ WireGuard found")
+    else:
+        print("⚠ WireGuard not found")
+        if platform.system() == "Windows":
+            print("  Run scripts\\windows\\quick_install.bat as Administrator")
+            print("  to install WireGuard automatically.")
+        print("  Or install manually from: https://www.wireguard.com/install/")
 
     print("\n" + "=" * 60)
     print("✅ Setup complete!")

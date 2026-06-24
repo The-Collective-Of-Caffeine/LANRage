@@ -2,6 +2,7 @@
 
 import asyncio
 import base64
+import os
 import platform
 import subprocess
 import sys
@@ -76,7 +77,8 @@ class NetworkManager:
         if not await self._check_wireguard():
             await self._log("WireGuard not found")
             raise WireGuardError(
-                "WireGuard not found. Install from: https://www.wireguard.com/install/"
+                "WireGuard not found. Install from: https://www.wireguard.com/install/\n"
+                "  Or run: python scripts/install_wireguard.py"
             )
 
         # Generate or load WireGuard keys
@@ -96,29 +98,45 @@ class NetworkManager:
         """Check if WireGuard is installed"""
         try:
             if self.is_windows:
-                # On Windows, check if wireguard.exe exists in PATH
-                # Try running wireguard with any command - it returns 1 but that means it exists
                 result = await self._run_command(
                     ["wireguard", "/help"], check=False, timeout=5.0
                 )
-                # wireguard.exe returns 1 for /help, but that means it's installed
-                # If it's not found, we'll get FileNotFoundError
                 return True
-            # Check for wg command
             result = await self._run_command(["which", "wg"], check=False, timeout=5.0)
             return result.returncode == 0
         except TimeoutError:
             await self._log("WireGuard check timed out")
-            return False
-        except FileNotFoundError as e:
-            await self._log(f"WireGuard check failed - command not found: {e}")
-            return False
-        except subprocess.CalledProcessError as e:
-            await self._log(f"WireGuard check failed - command error: {e}")
-            return False
-        except Exception as e:
-            await self._log(f"WireGuard check failed - unexpected error: {e}")
-            return False
+        except FileNotFoundError:
+            await self._log("WireGuard not found on PATH")
+        except subprocess.CalledProcessError:
+            await self._log("WireGuard check failed - command error")
+
+        # Fallback: check common install paths and marker file
+        if self.is_windows:
+            wg_paths = [
+                "C:\\Program Files\\WireGuard\\wireguard.exe",
+                "C:\\Program Files (x86)\\WireGuard\\wireguard.exe",
+                os.path.expanduser("~\\AppData\\Local\\Programs\\WireGuard\\wireguard.exe"),
+            ]
+            marker_file = ".wireguard_installed"
+            if os.path.exists(marker_file):
+                try:
+                    with open(marker_file) as f:
+                        marker_path = f.read().strip()
+                    if marker_path and os.path.exists(marker_path):
+                        wg_dir = os.path.dirname(marker_path)
+                        os.environ["PATH"] = wg_dir + os.pathsep + os.environ.get("PATH", "")
+                        await self._log("WireGuard found via marker file")
+                        return True
+                except Exception:
+                    pass
+            for path in wg_paths:
+                if os.path.exists(path):
+                    wg_dir = os.path.dirname(path)
+                    os.environ["PATH"] = wg_dir + os.pathsep + os.environ.get("PATH", "")
+                    await self._log("WireGuard found in common install location")
+                    return True
+        return False
 
     async def _ensure_keys(self):
         """Generate or load WireGuard keypair"""

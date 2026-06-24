@@ -1,60 +1,54 @@
 @echo off
 setlocal enabledelayedexpansion
 
+cd /d "%~dp0..\.."
+
+REM Check for admin and restart if needed
+net session >nul 2>&1
+if %errorLevel% neq 0 (
+    echo Requesting administrator privileges...
+    powershell Start-Process -Verb RunAs -FilePath "cmd" -ArgumentList '/c', '"%~f0" %*'
+    exit /b 0
+)
+
 echo ========================================
 echo LANrage Quick Install Script
 echo ========================================
 echo.
 
 REM Quick installation script for LANrage
-REM Installs Chocolatey, Python 3.12, uv, and runs LANrage
+REM Uses uv to manage Python and dependencies
 
-echo Checking for administrator privileges...
-net session >nul 2>&1
-if %errorLevel% neq 0 (
-    echo This script needs administrator privileges.
-    echo Please run as administrator.
-    pause
-    exit /b 1
-)
-
-REM Step 1: Install Chocolatey
-echo [1/5] Installing Chocolatey...
-where choco >nul 2>&1 || (
-    start "Chocolatey" cmd /k "powershell -ExecutionPolicy Bypass -Command ""Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"" && pause && exit"
-    echo Press any key after Chocolatey installation completes...
-    pause >nul
-    call refreshenv 2>nul
-)
-
-REM Step 2: Install Python 3.12
-echo [2/5] Installing Python 3.12...
-python --version 2>nul | findstr "3.12" >nul || (
-    start "Python 3.12" cmd /k "choco install python312 -y && pause && exit"
-    echo Press any key after Python installation completes...
-    pause >nul
-    call refreshenv 2>nul
-)
-
-REM Step 3: Upgrade pip and install uv
-echo [3/5] Upgrading pip and installing uv...
-start "Pip Upgrade" cmd /k "python -m pip install --upgrade pip && echo Pip upgraded! && pause && exit"
-echo Press any key after pip upgrade completes...
-pause >nul
-
+REM Step 1: Install uv
+echo [1/5] Installing uv package manager...
 where uv >nul 2>&1 || (
-    start "uv Package Manager" cmd /k "echo Installing uv via PowerShell... && powershell -ExecutionPolicy Bypass -Command ""try { irm https://astral.sh/uv/install.ps1 | iex; Write-Host 'uv installed via PowerShell!' } catch { Write-Host 'PowerShell failed, using pip...' }"" && echo Installing uv via pip... && python -m pip install uv && echo uv installed! && pause && exit"
+    start "uv" cmd /k "powershell -ExecutionPolicy Bypass -Command ""try { irm https://astral.sh/uv/install.ps1 | iex; Write-Host 'uv installed successfully!' } catch { Write-Host 'Failed to install uv:' $_.Exception.Message }"" && echo Installation complete. Press any key... && pause && exit"
     echo Press any key after uv installation completes...
     pause >nul
+    for /f "tokens=*" %%i in ('where uv 2^>nul') do set "uv_path=%%i"
+    if not defined uv_path (
+        set "PATH=%USERPROFILE%\.local\bin;%PATH%"
+    )
 )
 
-REM Step 4: Setup environment
-echo [4/5] Setting up LANrage environment...
-if not exist ".venv" (
-    start "LANrage Setup" cmd /k "python -m venv .venv && .venv\Scripts\activate.bat && python -m pip install --upgrade pip && python -m pip install uv && uv pip install -r requirements.txt && .venv\Scripts\python.exe scripts\setup_project.py && echo Setup complete! && pause && exit"
-    echo Press any key after environment setup completes...
+REM Step 2: Install Python 3.12 via uv
+echo [2/5] Installing Python 3.12...
+uv python find 3.12 >nul 2>&1 || (
+    start "Python 3.12" cmd /k "uv python install 3.12 && echo Python 3.12 installed! Press any key... && pause && exit"
+    echo Press any key after Python installation completes...
     pause >nul
 )
+
+REM Step 3: Setup environment
+echo [3/5] Setting up LANrage environment...
+if not exist ".venv" (
+    uv venv --python 3.12 .venv
+)
+uv sync --extra dev
+
+REM Step 4: Install WireGuard
+echo [4/5] Installing WireGuard (if needed)...
+.venv\Scripts\python.exe scripts\install_wireguard.py
 
 REM Step 5: Run LANrage
 echo [5/5] Starting LANrage...
